@@ -1,6 +1,6 @@
 package trabajointegrador;
 
-// Importamos la dependencia java.time
+// Importamos las dependencias necesarias
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -18,14 +18,7 @@ public class Mascota {
     private java.time.LocalDate fechaNacimiento;
     private String duenio;
     private Microchip microchip;
-    
-    /** 
-      * Constructor vacio para la inicializacion basica   
-     */
-    public Mascota() {
         
-    }
-    
     /** 
       * Constructor completo de la clase Mascota
       * @param id Identificador unico de la mascota.
@@ -59,6 +52,14 @@ public class Mascota {
         fechaNacimiento = LocalDate.now();
     }
 
+    /** 
+      * Constructor vacio para la inicializacion basica   
+     */
+    public Mascota() {
+        // lo piden en el pdf
+        // esto lo deje vacio por si tienen que agregar algo a futuro, sino agregamos un sout simple
+    }
+    
     /** 
      * Valida si un String es nulo o esta vacio
      * @param valor El String a validar
@@ -140,8 +141,7 @@ public class Mascota {
      * @param eliminado Valor enviado para cambiar el estado de la variable
      * @throws IllegalArgumentException Si el parametro eliminado es nulo
      */
-    public void setEliminado(Boolean eliminado) {
-        
+    public void setEliminado(Boolean eliminado) {  
         if(eliminado == null) {
             throw new IllegalArgumentException("El estado eliminado no puede ser null");
         }
@@ -158,7 +158,9 @@ public class Mascota {
      * @param especie Valor de la especie corregida de la mascota
      */
     public void setEspecie(String especie) {
-        if(especie != null && !this.especie.equals(especie)) {
+        validarParametroString(especie, "Especie");
+        
+        if(!Objects.equals(this.especie, especie)) {
             this.especie = especie;
         }
     }
@@ -170,7 +172,9 @@ public class Mascota {
      * @param nombre Valor del nuevo nombre
      */
     public void setNombre(String nombre){
-        if(nombre != null && !this.nombre.equals(nombre)) {
+        validarParametroString(nombre, "Nombre");
+        
+        if(!Objects.equals(this.nombre, nombre)) {
             this.nombre = nombre;
         }
     }
@@ -181,7 +185,9 @@ public class Mascota {
      * @param raza Valor de la raza corregida de la mascota
      */
     public void setRaza(String raza) {
-        if(raza != null && !this.raza.equals(raza)) {
+        validarParametroString(raza, "Raza");
+        
+        if(!Objects.equals(this.raza, raza)) {
             this.raza = raza;
         }
     }
@@ -192,7 +198,9 @@ public class Mascota {
      * @param duenio Valor del nuevo duenio
      */
     public void setDuenio(String duenio) {
-        if(duenio != null && !this.duenio.equals(duenio)) {
+        validarParametroString(duenio, "Duenio");
+        
+        if(!Objects.equals(this.duenio, duenio)) {
             this.duenio = duenio;
         }
     }
