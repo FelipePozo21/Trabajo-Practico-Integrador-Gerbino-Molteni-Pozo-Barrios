@@ -227,7 +227,7 @@ public class Mascota {
                 ", raza=" + raza +
                 ", fechaNacimiento=" + fechaNacimiento +
                 ", duenio=" + duenio +
-                ", microchip=" + microchip +
+                ", microchip=" + microchip.getCodigo() +
                 '}';
     }
 }

@@ -117,7 +117,7 @@ public class Microchip {
      * @param eliminado Parametro enviado para cambiar el estado de la variable
      * @throws IllegalArgumentException Si el parametros eliminado es nulo
      */
-    public void isEliminado(Boolean eliminado) {
+    public void setEliminado(Boolean eliminado) {
         if (eliminado == null) {
            throw new IllegalArgumentException("Eliminado no puede ser null");
         }
