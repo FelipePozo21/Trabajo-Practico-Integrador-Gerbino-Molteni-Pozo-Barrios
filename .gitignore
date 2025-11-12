@@ -1,0 +1,34 @@
+# === NetBeans ===
+nbproject/private/
+build/
+dist/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# === Java ===
+*.class
+*.log
+
+# === IDEs ===
+*.iml
+.idea/
+.vscode/
+
+# === Sistema operativo ===
+.DS_Store
+Thumbs.db
+
+# === Librerías y dependencias ===
+# Incluimos la carpeta lib con el conector MySQL
+!lib/
+!lib/*.jar
+
+# === Archivos temporales ===
+*.tmp
+*.bak
+*~
+
+# === Tests ===
+test/build/
+test/dist/
