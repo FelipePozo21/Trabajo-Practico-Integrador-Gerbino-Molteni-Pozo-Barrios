@@ -22,18 +22,15 @@ public class Mascota {
     /**
      * Constructor completo de la clase Mascota.
      * 
-     * @param id Identificador único de la mascota
-     * @param nombre Nombre de la mascota
-     * @param especie Especie a la que pertenece
-     * @param raza Raza de la mascota (puede ser null)
-     * @param duenio Dueño de la mascota
-     * @param fechaNacimiento FechaNacimiento de la mascota (puede ser null)
-     * @throws IllegalArgumentException Si algún parámetro obligatorio es nulo o vacío
+     * @param id Identificador unico (puede ser null para nuevos registros, lo genera la BD)
+     * @param nombre Nombre de la mascota (obligatorio)
+     * @param especie Especie a la que pertenece (obligatorio)
+     * @param raza Raza de la mascota (opcional, si es null se asigna "Sin especificar")
+     * @param duenio Dueño de la mascota (obligatorio)
+     * @param fechaNacimiento Fecha de nacimiento (opcional, si es null se asigna LocalDate.now())
+     * @throws IllegalArgumentException Si algun parametro obligatorio es nulo o vacio
      */
     public Mascota(Long id, String nombre, String especie, String raza, String duenio, LocalDate fechaNacimiento) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id no puede ser nulo");
-        }
         
         validarParametroString(nombre, "Nombre");
         validarParametroString(especie, "Especie");
