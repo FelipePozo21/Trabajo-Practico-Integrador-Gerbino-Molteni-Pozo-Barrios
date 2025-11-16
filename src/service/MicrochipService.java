@@ -1,0 +1,40 @@
+package service;
+
+import dao.MicrochipDao;
+import exception.ServiceException;
+import model.Microchip;
+
+/**
+ * Service para operaciones de negocio de Microchip.
+ */
+public class MicrochipService extends GenericService<Microchip> {
+    
+    private final MicrochipDao microchipDao;
+    
+    public MicrochipService() {
+        super(new MicrochipDao());
+        this.microchipDao = new MicrochipDao();
+    }
+    
+    @Override
+    protected void validarParaInsertar(Microchip microchip) throws ServiceException {
+        if (microchip == null) {
+            throw new ServiceException("El microchip no puede ser nulo");
+        }
+        if (microchip.getCodigo() == null || microchip.getCodigo().trim().isEmpty()) {
+            throw new ServiceException("El código es obligatorio");
+        }
+        if (microchip.getCodigo().length() > 25) {
+            throw new ServiceException("El código no puede exceder 25 caracteres");
+        }
+    }
+    
+    @Override
+    protected void validarParaActualizar(Microchip microchip) throws ServiceException {
+        validarParaInsertar(microchip);
+        
+        if (microchip.getId() == null || microchip.getId() <= 0) {
+            throw new ServiceException("ID inválido para actualizar");
+        }
+    }
+}

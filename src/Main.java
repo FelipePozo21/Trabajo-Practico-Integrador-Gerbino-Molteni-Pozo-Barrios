@@ -10,8 +10,15 @@ import model.Microchip;
  * @version 1.0
  */
 import java.time.LocalDate;
+import java.time.Month;
 import model.Mascota;
 import model.Microchip;
+import exception.ServiceException;
+import model.Mascota;
+import model.Microchip;
+import service.MascotaService;
+import service.MicrochipService;
+import java.time.LocalDate;
 
 /**
  * Clase principal del sistema de gestión de Mascotas y Microchips.
@@ -23,28 +30,56 @@ import model.Microchip;
 public class Main {
 
   public static void main(String[] args) {
-    ////////////////////////////////////PRUEBAS/////////////////////////////////////////////////////////////////
-    // Crear un microchip y probar metodos
-    Microchip microchip = new Microchip(10000000000L, "Codigo1", "Veterinaria1", "Saludable");
-    System.out.println(microchip.getId());
-    System.out.println(microchip.getCodigo());   
-    microchip.setEliminado(true);
-    microchip.setFechaImplementacion(LocalDate.of(2024, 12, 5));
-    microchip.setVeterinaria("NuevaVeterinaria");
-    microchip.setObservaciones("Enfermo");   
-    System.out.println(microchip.isEliminado());
-    System.out.println(microchip.getFechaImplementacion());
-    System.out.println(microchip.getVeterinaria());
-    System.out.println(microchip.getObservaciones());
-    // Crear una mascota y probar metodos
-    Mascota mascota = new Mascota(11000000000L, "Mascota1", "Perro", null, "Juana",null);
-    System.out.println(mascota);
-    mascota.setMicrochip(microchip);
-    mascota.setDuenio("Natalia");
-    mascota.setEspecie("Loro");
-    mascota.setRaza("Boxer");
-    System.out.println(mascota);
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+   probarMascota();
+   probarMicrochip();
+   probarTransaccion();
   }
+   
+  private static void probarMascota() {
+    System.out.println("Prueba insertar mascota");
+    
+    try {
+      MascotaService service = new MascotaService();
+      
+      Mascota mascota = new Mascota(null, "Firulais", "Perro", "Labrador","Juan Pérez", LocalDate.of(2025, 1, 10));
+      
+      service.insertar(mascota);
+      System.out.println("Mascota insertada: " + mascota.getId());
+    } catch (ServiceException e){
+      System.err.println("Error: " + e.getMessage());
+    }
+  }
+  
+  private static void probarMicrochip() {
+    System.out.println("Prueba insertar microchip");
+    
+    try {
+      MicrochipService service = new MicrochipService();
+      
+      Microchip microchip = new Microchip( null, "CHIP12345", "Veterinaria Central", "Prueba");
+      
+      service.insertar(microchip);
+      System.out.println("Microchip insertado: " + microchip.getId());
+    } catch (ServiceException e){
+      System.err.println("Error: " + e.getMessage());
+    }
+  }
+  
+  private static void probarTransaccion() {
+    System.out.println("Prueba transaccion");
+    
+    try {
+      MascotaService service = new MascotaService();
+      
+      Mascota luna = new Mascota(null, "Luna", "Gato", "Siames","Ana Gonzalez", LocalDate.of(2024, 5, 15));
+      Microchip microchip = new Microchip( null, "CHIP22222", "Veterinaria Colitas", "Contactar a X");
+      
+      service.crearMascotaConMicrochip(luna, microchip);
+    } catch (ServiceException e) {
+      System.err.println("Error Transaccion: " + e.getMessage());
+    }
+  }
+  
 }
 
