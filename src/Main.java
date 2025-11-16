@@ -42,7 +42,7 @@ public class Main {
     try {
       MascotaService service = new MascotaService();
       
-      Mascota mascota = new Mascota(null, "Firulais", "Perro", "Labrador","Juan Pérez", LocalDate.of(2025, 1, 10));
+      Mascota mascota = new Mascota(null, "Pepino", "Cobayo", "Saltarin","Juan Pérez", LocalDate.of(2025, 1, 10));
       
       service.insertar(mascota);
       System.out.println("Mascota insertada: " + mascota.getId());
@@ -57,7 +57,7 @@ public class Main {
     try {
       MicrochipService service = new MicrochipService();
       
-      Microchip microchip = new Microchip( null, "CHIP12345", "Veterinaria Central", "Prueba");
+      Microchip microchip = new Microchip( null, "CHIP123455", "Veterinaria Central", "Prueba");
       
       service.insertar(microchip);
       System.out.println("Microchip insertado: " + microchip.getId());
@@ -72,8 +72,8 @@ public class Main {
     try {
       MascotaService service = new MascotaService();
       
-      Mascota luna = new Mascota(null, "Luna", "Gato", "Siames","Ana Gonzalez", LocalDate.of(2024, 5, 15));
-      Microchip microchip = new Microchip( null, "CHIP22222", "Veterinaria Colitas", "Contactar a X");
+      Mascota luna = new Mascota(null, "Mondongo", "Gato", "Siames","Pablo Gonzalez", LocalDate.of(2024, 5, 15));
+      Microchip microchip = new Microchip( null, "CHIP123456", "Veterinaria Colitas", "Contactar a X");
       
       service.crearMascotaConMicrochip(luna, microchip);
     } catch (ServiceException e) {
