@@ -1,7 +1,7 @@
 package dao;
 
 import exception.DaoException;
-import model.Microchip;
+import entities.Microchip;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

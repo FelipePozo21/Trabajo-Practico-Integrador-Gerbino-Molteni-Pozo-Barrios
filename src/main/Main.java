@@ -1,3 +1,5 @@
+package main;
+
 /**
  * Clase principal del sistema de gestion de Mascotas y Microchips.
  * Punto de entrada de la aplicacion.
@@ -7,7 +9,6 @@
  */
 
 public class Main {
-
     public static void main(String[] args) {
         
         // Iniciamos AppMenu con la Interfaz CLI
@@ -18,5 +19,4 @@ public class Main {
         // Salida del sistema manejada por AppMenu
         
     }
-
 }

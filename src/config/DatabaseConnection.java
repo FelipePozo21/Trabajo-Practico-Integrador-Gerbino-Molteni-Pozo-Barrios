@@ -8,7 +8,7 @@ public class DatabaseConnection {
     // Ingresar cada uno su usuario, contraseña y direccion en donde tiene la base de datos
     private static final String url = "jdbc:mysql://127.0.0.1:3306/mascotas_db";
     private static final String user = "root";
-    private static final String pass = "";
+    private static final String pass = "1234";
     
     // Metodo para el Driver
     static {
@@ -21,11 +21,9 @@ public class DatabaseConnection {
     
     // Metodo para conectarse con la Base de Datos
     public static Connection getConexion() throws SQLException {
-        /*
         if (url == null || url.isEmpty() || user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
             throw new SQLException("Configuracion de la base de datos invalida.");
         }
-        */
         return DriverManager.getConnection(url, user, pass);
     }
 }

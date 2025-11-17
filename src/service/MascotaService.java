@@ -5,8 +5,8 @@ import dao.MascotaDao;
 import dao.MicrochipDao;
 import exception.DaoException;
 import exception.ServiceException;
-import model.Mascota;
-import model.Microchip;
+import entities.Mascota;
+import entities.Microchip;
 import java.sql.Connection;
 import java.sql.SQLException;
 

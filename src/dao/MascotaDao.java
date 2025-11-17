@@ -5,8 +5,8 @@
 package dao;
 
 import exception.DaoException;
-import model.Mascota;
-import model.Microchip;
+import entities.Mascota;
+import entities.Microchip;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import config.DatabaseConnection;
 import dao.MicrochipDao;
 import exception.DaoException;
 import exception.ServiceException;
-import model.Microchip;
+import entities.Microchip;
 
 import java.sql.Connection;
 import java.sql.SQLException;

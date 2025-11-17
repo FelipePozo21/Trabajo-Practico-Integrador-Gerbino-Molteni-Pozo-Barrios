@@ -1,6 +1,8 @@
+package main;
+
 import exception.ServiceException;
-import model.Mascota;
-import model.Microchip;
+import entities.Mascota;
+import entities.Microchip;
 import service.MascotaService;
 import service.MicrochipService;
 
