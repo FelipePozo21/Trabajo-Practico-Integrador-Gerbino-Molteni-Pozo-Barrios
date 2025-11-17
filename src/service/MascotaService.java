@@ -197,4 +197,13 @@ public class MascotaService extends GenericService<Mascota> {
             throw new ServiceException("El codigo del microchip es obligatorio");
         }
     }
+    
+    public Mascota getByMicrochipId(Long microchipId) throws ServiceException {
+        try (Connection conn = DatabaseConnection.getConexion()) {
+            return mascotaDao.buscarMascotaPorMicrochipId(microchipId, conn);
+        } catch (SQLException | DaoException e) {
+            throw new ServiceException("Error de busqueda inversa: " + e.getMessage(), e);
+        }
+    }
+    
 }

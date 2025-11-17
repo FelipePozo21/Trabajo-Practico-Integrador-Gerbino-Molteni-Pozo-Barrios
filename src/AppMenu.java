@@ -430,9 +430,9 @@ public class AppMenu {
                 return;
             }
             
-            Mascota mascota = mascotaService.getById(microchip.getId()); 
+            Mascota mascota = mascotaService.getByMicrochipId(microchip.getId());
             
-            if (mascota != null && mascota.getMicrochip() != null && mascota.getMicrochip().getId().equals(microchip.getId())) {
+            if (mascota != null) {
                  System.out.println("Mascota encontrada: " + mascota);
             } else {
                  System.out.println("El Microchip fue encontrado, pero no esta asignado a una mascota activa.");
