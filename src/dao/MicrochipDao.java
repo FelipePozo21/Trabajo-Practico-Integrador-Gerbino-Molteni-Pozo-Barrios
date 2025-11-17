@@ -82,7 +82,7 @@ public class MicrochipDao implements GenericDao<Microchip> {
     
     @Override
     public void actualizar(Microchip microchip, Connection conn) throws DaoException {
-        String sql = "UPDATE microchip SET codigo = ?, fecha_implementacion = ?, " +
+        String sql = "UPDATE microchip SET codigo = ?, fecha_implantacion = ?, " +
                      "veterinaria = ?, observaciones = ? WHERE id = ?";
         
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -126,7 +126,7 @@ public class MicrochipDao implements GenericDao<Microchip> {
      * Busca un microchip asociado a una mascota especifica.
      */
    public Microchip buscarPorMascotaId(Long mascotaId, Connection conn) throws DaoException {
-        String sql = "SELECT * FROM mascota WHERE microchip_id = ? AND eliminado = FALSE";
+        String sql = "SELECT * FROM microchip WHERE id = (SELECT microchip_id FROM mascota WHERE id = ?) AND eliminado = FALSE";
         
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, mascotaId);
@@ -144,10 +144,6 @@ public class MicrochipDao implements GenericDao<Microchip> {
     } 
     
     /**
-     * Asocia un microchip a una mascota.
-     */
-    
-    /**
      * Mapea un ResultSet a un objeto Microchip.
      */
     private Microchip mapearMicrochip(ResultSet rs) throws SQLException {
@@ -156,7 +152,7 @@ public class MicrochipDao implements GenericDao<Microchip> {
         microchip.setEliminado(rs.getBoolean("eliminado"));
         microchip.setCodigo(rs.getString("codigo"));
         
-        Date fechaImpl = rs.getDate("fecha_implementacion");
+        Date fechaImpl = rs.getDate("fecha_implantacion");
         if (fechaImpl != null) {
             microchip.setFechaImplementacion(fechaImpl.toLocalDate());
         }

@@ -94,7 +94,7 @@ public class MascotaDao implements GenericDao<Mascota> {
       return mascotas;
       
     } catch (SQLException e) {
-      throw new DaoException("Error al leer todas las mas cotas: " + e.getMessage(), e);
+      throw new DaoException("Error al leer todas las mas mascotas: " + e.getMessage(), e);
     }
   }
  
@@ -124,7 +124,7 @@ public class MascotaDao implements GenericDao<Mascota> {
   
   @Override
   public void eliminar(Long id, Connection conexion) throws DaoException {
-    String sql = "UPDATE mascota SET eliminado 0 TRUE WHERE id = ?";
+    String sql = "UPDATE mascota SET eliminado = TRUE WHERE id = ?";
     
     try (PreparedStatement statement = conexion.prepareStatement(sql)) {
      statement.setLong(1, id);
@@ -156,7 +156,23 @@ public class MascotaDao implements GenericDao<Mascota> {
             throw new DaoException("Error al asociar microchip: " + e.getMessage(), e);
         }
     }
-  
+    
+  public Mascota buscarMascotaPorMicrochipId(Long microchipId, Connection conn) throws DaoException {
+      String sql = "SELECT * FROM mascota WHERE microchip_id = ? AND eliminado = FALSE";
+
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+          stmt.setLong(1, microchipId);
+
+          try (ResultSet rs = stmt.executeQuery()) {
+              if (rs.next()) {
+                  return mapearMascota(rs, conn);
+              }
+              return null;
+          }
+      } catch (SQLException e) {
+          throw new DaoException("Error al buscar mascota por microchip: " + e.getMessage(), e);
+      }
+  }
   
  /**
   * Convierte un registro del ResultSet en un objeto Mascota completo.

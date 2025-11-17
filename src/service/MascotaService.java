@@ -45,7 +45,7 @@ public class MascotaService extends GenericService<Mascota> {
         validarParaInsertar(mascota);
         
         if (mascota.getId() == null || mascota.getId() <= 0) {
-            throw new ServiceException("ID inválido para actualizar");
+            throw new ServiceException("ID invalido para actualizar");
         }
     }
     
@@ -86,44 +86,49 @@ public class MascotaService extends GenericService<Mascota> {
     }
     
     /**
-     * Asigna un microchip existente a una mascota.
-     * Verifica que se mantenga la relación 1→1.
+     * le asigna un microchip a una mascota que exista (transaccion)
+     * garantiza la relacion 1→1.
      */
     public void asignarMicrochip(Long mascotaId, Long microchipId) throws ServiceException {
         Connection conn = null;
         try {
+            // verificar que los IDs no sean null
+            if (mascotaId == null || microchipId == null) {
+                throw new ServiceException("Error: Los IDs de mascota y microchip no pueden ser null. Verifique que se crearon correctamente.");
+            }
+
             conn = DatabaseConnection.getConexion();
             conn.setAutoCommit(false);
-            
-            // Verificar que la mascota existe
+
+            // verificar que la mascota existe
             Mascota mascota = mascotaDao.leer(mascotaId, conn);
             if (mascota == null) {
-                throw new ServiceException("Mascota no encontrada con id: " + mascotaId);
+                throw new ServiceException("Error: Mascota con ID " + mascotaId + " no existe o fue eliminada.");
             }
-            
-            // Verificar que la mascota no tenga ya un microchip
-            if (mascota.getMicrochip() != null) {
-                throw new ServiceException("La mascota ya tiene un microchip asignado");
-            }
-            
-            // Verificar que el microchip existe
+
+            // verificar que el microchip existe
             Microchip microchip = microchipDao.leer(microchipId, conn);
             if (microchip == null) {
-                throw new ServiceException("Microchip no encontrado con id: " + microchipId);
+                throw new ServiceException("Error: Microchip con ID " + microchipId + " no existe o fue eliminado.");
             }
-            
-            // Verificar que el microchip no esté asignado a otra mascota
-            // (buscar si alguna mascota ya tiene ese microchip)
-            Microchip microchipEnUso = microchipDao.buscarPorMascotaId(mascotaId, conn);
-            if (microchipEnUso != null && !microchipEnUso.getId().equals(microchipId)) {
-                throw new ServiceException("El microchip ya está asignado a otra mascota");
+
+            // verificar que la mascota no tenga ya un microchip asignado
+            Microchip microchipActual = microchipDao.buscarPorMascotaId(mascotaId, conn);
+            if (microchipActual != null) {
+                throw new ServiceException("Error: La mascota ya tiene un microchip asignado (ID: " + microchipActual.getId() + ").");
             }
-            
-            // Asignar
+
+            // verificar que el microchip no este asignado a otra mascota
+            Mascota mascotaDelMicrochip = mascotaDao.buscarMascotaPorMicrochipId(microchipId, conn);
+            if (mascotaDelMicrochip != null) {
+                throw new ServiceException("Error: El microchip ya esta asignado a otra mascota (ID: " + mascotaDelMicrochip.getId() + ").");
+            }
+
+
             mascotaDao.asociarMicrochip(microchipId, mascotaId, conn);
-            
+
             conn.commit();
-            
+
         } catch (SQLException | DaoException e) {
             rollback(conn);
             throw new ServiceException("Error al asignar microchip: " + e.getMessage(), e);

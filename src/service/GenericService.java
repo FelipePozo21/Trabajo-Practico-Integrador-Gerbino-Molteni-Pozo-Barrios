@@ -47,7 +47,7 @@ public abstract class GenericService<T> {
      */
     public T getById(Long id) throws ServiceException {
         if (id == null || id <= 0) {
-            throw new ServiceException("ID inválido");
+            throw new ServiceException("ID invalido");
         }
         
         Connection conn = null;
@@ -105,7 +105,7 @@ public abstract class GenericService<T> {
      */
     public void eliminar(Long id) throws ServiceException {
         if (id == null || id <= 0) {
-            throw new ServiceException("ID inválido");
+            throw new ServiceException("ID invalido");
         }
         
         Connection conn = null;
@@ -142,6 +142,7 @@ public abstract class GenericService<T> {
         if (conn != null) {
             try {
                 conn.rollback();
+                System.out.println("ROLLBACK APLICADO, la transaccion fue revertida correctamente.");
             } catch (SQLException e) {
                 System.err.println("Error en rollback: " + e.getMessage());
             }

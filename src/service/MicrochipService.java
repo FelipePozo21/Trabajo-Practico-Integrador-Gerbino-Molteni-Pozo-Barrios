@@ -22,10 +22,10 @@ public class MicrochipService extends GenericService<Microchip> {
             throw new ServiceException("El microchip no puede ser nulo");
         }
         if (microchip.getCodigo() == null || microchip.getCodigo().trim().isEmpty()) {
-            throw new ServiceException("El código es obligatorio");
+            throw new ServiceException("El codigo es obligatorio");
         }
         if (microchip.getCodigo().length() > 25) {
-            throw new ServiceException("El código no puede exceder 25 caracteres");
+            throw new ServiceException("El codigo no puede exceder 25 caracteres");
         }
     }
     
@@ -34,7 +34,7 @@ public class MicrochipService extends GenericService<Microchip> {
         validarParaInsertar(microchip);
         
         if (microchip.getId() == null || microchip.getId() <= 0) {
-            throw new ServiceException("ID inválido para actualizar");
+            throw new ServiceException("ID invalido para actualizar");
         }
     }
 }
