@@ -1,6 +1,6 @@
 # Sistema de Registro de Mascotas y Microchips
 
-Este es un **Trabajo Final Integrador** desarrollado para la materia Programación 2 de la Tecncatura Universitaria en Programación a Distancia.
+Este es un **Trabajo Final Integrador** desarrollado para la materia Programación 2 de la Tecnicatura Universitaria en Programación a Distancia.
 
 El objetivo principal fue desarrollar un sistema de gestión y registro para mascotas y sus microchips asociados. La aplicación modela y persiste los datos en una base de datos relacional MySQL, implementando una arquitectura multicapa (Config, Entities, DAO, Service, AppMenu) y utilizando el patrón **Data Access Object (DAO)** y **Service Layer** para encapsular la lógica de negocio y las operaciones transaccionales.
 
@@ -14,6 +14,9 @@ El objetivo principal fue desarrollar un sistema de gestión y registro para mas
 ## Enlace de Video
 
 [![Demo YouTube](https://placehold.co/600x300/F0F8FF/333333?text=Click+para+ver+el+video)](https://www.youtube.com/watch?v=jU4fD-qF3fU)
+
+- UML: https://github.com/FelipePozo21/Trabajo-Practico-Integrador-Gerbino-Molteni-Pozo-Barrios/blob/main/DiagramaUML.png
+- PDF: https://github.com/FelipePozo21/Trabajo-Practico-Integrador-Gerbino-Molteni-Pozo-Barrios/blob/main/TPI%20PROGRAMACION%202.pdf
 
 ## Características Clave
 
