@@ -266,9 +266,9 @@ public class AppMenu {
             Microchip microchip = new Microchip();
             System.out.print("Codigo (obligatorio y debe ser unico): ");
             microchip.setCodigo(scanner.nextLine().toUpperCase()); 
-            System.out.print("Veterinaria (opcional): ");
+            System.out.print("Veterinaria: ");
             microchip.setVeterinaria(scanner.nextLine());
-            System.out.print("Observaciones (opcional): ");
+            System.out.print("Observaciones: ");
             microchip.setObservaciones(scanner.nextLine());
             microchip.setFechaImplementacion(leerFecha("Fecha de Implantacion (YYYY-MM-DD, opcional, default hoy)"));
 
