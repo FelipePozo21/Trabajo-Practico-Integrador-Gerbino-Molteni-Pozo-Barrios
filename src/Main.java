@@ -108,6 +108,7 @@ public class Main {
 
         try {
             service.eliminar(mascotaId);
+            System.out.println("Eliminando mascota con ID: " + mascotaId);
             System.out.println("Mascota eliminada (baja logica).");
         } catch (ServiceException e) {
             System.err.println("ERROR: " + e.getMessage());
@@ -179,6 +180,7 @@ public class Main {
         MicrochipService service = new MicrochipService();
 
         try {
+            System.out.println("Eliminando microchip con ID: " + microchipId);
             service.eliminar(microchipId);
             System.out.println("Microchip eliminado (baja logica).");
         } catch (ServiceException e) {
@@ -224,6 +226,8 @@ public class Main {
         try {
             service.crearMascotaConMicrochip(mascota, mc);
             System.out.println("Mascota creada con microchip en una sola transaccion.");
+            System.out.println("ID Mascota: " + mascota.getId());
+            System.out.println("ID Microchip: " + mc.getId());
         } catch (ServiceException e) {
             System.err.println("ERROR: " + e.getMessage());
         }
