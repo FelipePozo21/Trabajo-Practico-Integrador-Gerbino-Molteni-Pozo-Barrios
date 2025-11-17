@@ -13,8 +13,8 @@ public class MicrochipDao implements GenericDao<Microchip> {
     
     @Override
     public void crear(Microchip microchip, Connection conn) throws DaoException {
-        String sql = "INSERT INTO microchip (eliminado, codigo, fecha_implementacion, " +
-                     "veterinaria, observaciones, mascota_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO microchip (eliminado, codigo, fecha_implantacion, " +
+                     "veterinaria, observaciones) VALUES (?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setBoolean(1, microchip.isEliminado());
@@ -23,7 +23,6 @@ public class MicrochipDao implements GenericDao<Microchip> {
                          Date.valueOf(microchip.getFechaImplementacion()) : null);
             stmt.setString(4, microchip.getVeterinaria());
             stmt.setString(5, microchip.getObservaciones());
-            stmt.setNull(6, Types.BIGINT); // mascota_id se asigna despues
             
             int filasAfectadas = stmt.executeUpdate();
             
@@ -126,8 +125,8 @@ public class MicrochipDao implements GenericDao<Microchip> {
     /**
      * Busca un microchip asociado a una mascota especifica.
      */
-    public Microchip buscarPorMascotaId(Long mascotaId, Connection conn) throws DaoException {
-        String sql = "SELECT * FROM microchip WHERE mascota_id = ? AND eliminado = FALSE";
+   public Microchip buscarPorMascotaId(Long mascotaId, Connection conn) throws DaoException {
+        String sql = "SELECT * FROM mascota WHERE microchip_id = ? AND eliminado = FALSE";
         
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, mascotaId);
@@ -142,28 +141,11 @@ public class MicrochipDao implements GenericDao<Microchip> {
         } catch (SQLException e) {
             throw new DaoException("Error al buscar microchip por mascota: " + e.getMessage(), e);
         }
-    }
+    } 
     
     /**
      * Asocia un microchip a una mascota.
      */
-    public void asociarMascota(Long microchipId, Long mascotaId, Connection conn) throws DaoException {
-        String sql = "UPDATE microchip SET mascota_id = ? WHERE id = ?";
-        
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, mascotaId);
-            stmt.setLong(2, microchipId);
-            
-            int filasAfectadas = stmt.executeUpdate();
-            
-            if (filasAfectadas == 0) {
-                throw new DaoException("No se pudo asociar el microchip a la mascota");
-            }
-            
-        } catch (SQLException e) {
-            throw new DaoException("Error al asociar microchip: " + e.getMessage(), e);
-        }
-    }
     
     /**
      * Mapea un ResultSet a un objeto Microchip.

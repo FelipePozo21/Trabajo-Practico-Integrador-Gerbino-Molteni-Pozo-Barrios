@@ -70,7 +70,7 @@ public class MascotaService extends GenericService<Mascota> {
             mascotaDao.crear(mascota, conn);
             
             // 3. Asociar microchip a mascota
-            microchipDao.asociarMascota(microchip.getId(), mascota.getId(), conn);
+            mascotaDao.asociarMicrochip(microchip.getId(), mascota.getId(), conn);
             
             // 4. Actualizar objeto en memoria
             mascota.setMicrochip(microchip);
@@ -120,7 +120,7 @@ public class MascotaService extends GenericService<Mascota> {
             }
             
             // Asignar
-            microchipDao.asociarMascota(microchipId, mascotaId, conn);
+            mascotaDao.asociarMicrochip(microchipId, mascotaId, conn);
             
             conn.commit();
             

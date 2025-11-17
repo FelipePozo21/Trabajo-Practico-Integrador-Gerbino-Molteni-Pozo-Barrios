@@ -139,6 +139,24 @@ public class MascotaDao implements GenericDao<Mascota> {
     }
   }
 
+    public void asociarMicrochip(Long microchipId, Long mascotaId, Connection conn) throws DaoException {
+        String sql = "UPDATE mascota SET microchip_id = ? WHERE id = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, microchipId);
+            stmt.setLong(2, mascotaId);
+            
+            int filasAfectadas = stmt.executeUpdate();
+            
+            if (filasAfectadas == 0) {
+                throw new DaoException("No se pudo asociar el microchip a la mascota");
+            }
+            
+        } catch (SQLException e) {
+            throw new DaoException("Error al asociar microchip: " + e.getMessage(), e);
+        }
+    }
+  
   
  /**
   * Convierte un registro del ResultSet en un objeto Mascota completo.
