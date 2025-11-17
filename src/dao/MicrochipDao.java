@@ -142,6 +142,23 @@ public class MicrochipDao implements GenericDao<Microchip> {
             throw new DaoException("Error al buscar microchip por mascota: " + e.getMessage(), e);
         }
     } 
+   
+    public Microchip buscarPorCodigo(String codigo, Connection conn) throws DaoException {
+        String sql = "SELECT * FROM microchip WHERE codigo = ? AND eliminado = FALSE";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, codigo);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapearMicrochip(rs); 
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Error al buscar microchip por codigo: " + e.getMessage(), e);
+        }
+    }
     
     /**
      * Mapea un ResultSet a un objeto Microchip.

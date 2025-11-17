@@ -1,16 +1,24 @@
 package service;
 
+import config.DatabaseConnection;
 import dao.MicrochipDao;
+import exception.DaoException;
 import exception.ServiceException;
 import model.Microchip;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Service para operaciones de negocio de Microchip.
  */
 public class MicrochipService extends GenericService<Microchip> {
+    
+    private final MicrochipDao microchipDao;
   
     public MicrochipService() {
         super(new MicrochipDao());
+        this.microchipDao = (MicrochipDao) dao;
     }
     
     @Override
@@ -34,4 +42,23 @@ public class MicrochipService extends GenericService<Microchip> {
             throw new ServiceException("ID invalido para actualizar");
         }
     }
+    
+    public Microchip getByCodigo(String codigo) throws ServiceException {
+        if (codigo == null || codigo.trim().isEmpty()) {
+            throw new ServiceException("El codigo de busqueda no puede ser vacio.");
+        }
+        
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConexion();
+            // Llama al nuevo metodo implementado en el DAO
+            return microchipDao.buscarPorCodigo(codigo, conn);  
+        } catch (SQLException | DaoException e) {
+            throw new ServiceException("Error al buscar microchip por codigo: " + e.getMessage(), e);
+        } finally {
+            // Reutilizamos el metodo de GenericService para cerrar la conexion
+            cerrarConexion(conn); 
+        }
+    }
+    
 }
