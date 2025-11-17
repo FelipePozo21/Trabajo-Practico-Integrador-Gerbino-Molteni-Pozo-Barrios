@@ -57,6 +57,7 @@ public class AppMenu {
     }
 
     private void manejarOpcionPrincipal(int opcion) {
+        if (opcion != 0 && opcion != -1) { scanner.nextLine(); }
         switch (opcion) {
             case 1:
                 System.out.println("Iniciando CRUD Mascota");
@@ -449,13 +450,13 @@ public class AppMenu {
         System.out.print(prompt + " (dejar vacio para usar el valor por defecto): ");
         String fechaStr = scanner.nextLine();
         if (fechaStr.trim().isEmpty()) {
-            return null;
+            return LocalDate.now();
         }
         try {
             return LocalDate.parse(fechaStr);
         } catch (DateTimeParseException e) {
             System.err.println("Formato de fecha invalido (debe ser YYYY-MM-DD). Usando el valor por defecto.");
-            return null; 
+            return LocalDate.now();
         }
     }
     

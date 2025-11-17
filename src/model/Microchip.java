@@ -118,9 +118,11 @@ public class Microchip {
      * Establece la fecha de implementacion.
      */
     public void setFechaImplementacion(LocalDate fechaImplementacion) {
+        /*
         if (fechaImplementacion == null) {
             throw new IllegalArgumentException("fechaImplementacion no puede ser nulo");
         }
+        */
         if (fechaImplementacion.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha no puede ser futura");
         }
