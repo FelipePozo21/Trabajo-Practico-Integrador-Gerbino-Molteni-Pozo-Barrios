@@ -8,12 +8,9 @@ import model.Microchip;
  * Service para operaciones de negocio de Microchip.
  */
 public class MicrochipService extends GenericService<Microchip> {
-    
-    private final MicrochipDao microchipDao;
-    
+  
     public MicrochipService() {
         super(new MicrochipDao());
-        this.microchipDao = new MicrochipDao();
     }
     
     @Override

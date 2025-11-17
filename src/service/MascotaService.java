@@ -50,8 +50,8 @@ public class MascotaService extends GenericService<Mascota> {
     }
     
     /**
-     * Crea una mascota y le asigna un microchip en una sola transacción.
-     * Garantiza la relación 1→1.
+     * Crea una mascota y le asigna un microchip en una sola transaccion.
+     * Garantiza la relacion 1→1.
      */
     public void crearMascotaConMicrochip(Mascota mascota, Microchip microchip) throws ServiceException {
         Connection conn = null;
@@ -86,13 +86,13 @@ public class MascotaService extends GenericService<Mascota> {
     }
     
     /**
-     * le asigna un microchip a una mascota que exista (transaccion)
-     * garantiza la relacion 1→1.
+     * Asigna un microchip a una mascota que exista (transaccion).
+     * Garantiza la relacion 1→1.
      */
     public void asignarMicrochip(Long mascotaId, Long microchipId) throws ServiceException {
         Connection conn = null;
         try {
-            // verificar que los IDs no sean null
+            // Verificar que los IDs no sean null
             if (mascotaId == null || microchipId == null) {
                 throw new ServiceException("Error: Los IDs de mascota y microchip no pueden ser null. Verifique que se crearon correctamente.");
             }
@@ -100,36 +100,85 @@ public class MascotaService extends GenericService<Mascota> {
             conn = DatabaseConnection.getConexion();
             conn.setAutoCommit(false);
 
-            // verificar que la mascota existe
+            // Verificar que la mascota existe
             Mascota mascota = mascotaDao.leer(mascotaId, conn);
             if (mascota == null) {
                 throw new ServiceException("Error: Mascota con ID " + mascotaId + " no existe o fue eliminada.");
             }
 
-            // verificar que el microchip existe
+            // Verificar que el microchip existe
             Microchip microchip = microchipDao.leer(microchipId, conn);
             if (microchip == null) {
                 throw new ServiceException("Error: Microchip con ID " + microchipId + " no existe o fue eliminado.");
             }
 
-            // verificar que la mascota no tenga ya un microchip asignado
+            // Verificar que la mascota no tenga ya un microchip asignado
             Microchip microchipActual = microchipDao.buscarPorMascotaId(mascotaId, conn);
             if (microchipActual != null) {
                 throw new ServiceException("Error: La mascota ya tiene un microchip asignado (ID: " + microchipActual.getId() + ").");
             }
 
-            // verificar que el microchip no este asignado a otra mascota
+            // Verificar que el microchip no este asignado a otra mascota
             Mascota mascotaDelMicrochip = mascotaDao.buscarMascotaPorMicrochipId(microchipId, conn);
             if (mascotaDelMicrochip != null) {
                 throw new ServiceException("Error: El microchip ya esta asignado a otra mascota (ID: " + mascotaDelMicrochip.getId() + ").");
             }
 
-
             mascotaDao.asociarMicrochip(microchipId, mascotaId, conn);
-
             conn.commit();
 
         } catch (SQLException | DaoException e) {
+            rollback(conn);
+            throw new ServiceException("Error al asignar microchip: " + e.getMessage(), e);
+        } finally {
+            cerrarConexion(conn);
+        }
+    }
+    
+    /**
+     * Asigna un microchip con falla forzada para probar rollback.
+     */
+    public void asignarMicrochipConFallaForzadaRollback(Long mascotaId, Long microchipId) throws ServiceException {
+        Connection conn = null;
+        try {
+            // Verificar que los IDs no sean null
+            if (mascotaId == null || microchipId == null) {
+                throw new ServiceException("Error: Los IDs de mascota y microchip no pueden ser null. Verifique que se crearon correctamente.");
+            }
+
+            conn = DatabaseConnection.getConexion();
+            conn.setAutoCommit(false);
+
+            // Verificar que la mascota existe
+            Mascota mascota = mascotaDao.leer(mascotaId, conn);
+            if (mascota == null) {
+                throw new ServiceException("Error: Mascota con ID " + mascotaId + " no existe o fue eliminada.");
+            }
+
+            // Verificar que el microchip existe
+            Microchip microchip = microchipDao.leer(microchipId, conn);
+            if (microchip == null) {
+                throw new ServiceException("Error: Microchip con ID " + microchipId + " no existe o fue eliminado.");
+            }
+
+            // Verificar que la mascota no tenga ya un microchip asignado
+            Microchip microchipActual = microchipDao.buscarPorMascotaId(mascotaId, conn);
+            if (microchipActual != null) {
+                throw new ServiceException("Error: La mascota ya tiene un microchip asignado (ID: " + microchipActual.getId() + ").");
+            }
+
+            // Verificar que el microchip no este asignado a otra mascota
+            Mascota mascotaDelMicrochip = mascotaDao.buscarMascotaPorMicrochipId(microchipId, conn);
+            if (mascotaDelMicrochip != null) {
+                throw new ServiceException("Error: El microchip ya esta asignado a otra mascota (ID: " + mascotaDelMicrochip.getId() + ").");
+            }
+
+            mascotaDao.asociarMicrochip(microchipId, mascotaId, conn);
+            
+            // Falla forzada para probar rollback
+            throw new SQLException("Falla forzada para probar rollback");
+
+        } catch (SQLException | DaoException | ServiceException e) {
             rollback(conn);
             throw new ServiceException("Error al asignar microchip: " + e.getMessage(), e);
         } finally {
@@ -145,7 +194,7 @@ public class MascotaService extends GenericService<Mascota> {
             throw new ServiceException("El microchip no puede ser nulo");
         }
         if (microchip.getCodigo() == null || microchip.getCodigo().trim().isEmpty()) {
-            throw new ServiceException("El código del microchip es obligatorio");
+            throw new ServiceException("El codigo del microchip es obligatorio");
         }
     }
 }

@@ -85,6 +85,7 @@ public class Main {
         MascotaService service = new MascotaService();
 
         try {
+            //Modificamos a Rocky en esta prueba (2L) por que no esta eliminado (pruebas posteriores)
             Mascota mascota = service.getById(2L);
 
             if (mascota == null) {
@@ -92,7 +93,7 @@ public class Main {
                 return;
             }
 
-            mascota.setNombre("Mondongo Actualizado");
+            mascota.setNombre("Rocky Balboa");
             service.actualizar(mascota);
 
             System.out.println("Mascota actualizada.");
@@ -235,11 +236,38 @@ public class Main {
 
     private static void probarRollbackForzadoAsignacion() {
         System.out.println("\n=== PRUEBA DE ROLLBACK FORZADO ===");
+        
+        MascotaService mascotaService = new MascotaService();
+        MicrochipService microchipService = new MicrochipService();
 
-        MascotaService service = new MascotaService();
+        // Crear mascota sin microchip
+        Mascota mascotaParaRollback = new Mascota();
+        mascotaParaRollback.setNombre("Bar");
+        mascotaParaRollback.setEspecie("Perro");
+        mascotaParaRollback.setRaza("Pastor Aleman");
+        mascotaParaRollback.setDuenio("Julian");
+        mascotaParaRollback.setFechaNacimiento(LocalDate.of(2023, 12, 5));
+
+        // Crear microchip sin mascota
+        Microchip microchipParaRollback = new Microchip();
+        microchipParaRollback.setCodigo("ROLLBACK" + (System.currentTimeMillis() % 10000));
+        microchipParaRollback.setFechaImplementacion(LocalDate.now());
+        microchipParaRollback.setVeterinaria("AnimalRollback");
+        microchipParaRollback.setObservaciones("Prueba de rollback con falla forzada");
 
         try {
-            service.asignarMicrochip(mascotaId, 999999L);
+            // Insertar mascota
+            mascotaService.insertar(mascotaParaRollback);
+            Long mascotaRollbackId = mascotaParaRollback.getId();
+            System.out.println("Mascota de prueba creada con ID: " + mascotaRollbackId);
+
+            // Insertar microchip
+            microchipService.insertar(microchipParaRollback);
+            Long microchipRollbackId = microchipParaRollback.getId();
+            System.out.println("Microchip de prueba creado con ID: " + microchipRollbackId);
+
+            // Intentar asignar con falla forzada para probar rollback
+            mascotaService.asignarMicrochipConFallaForzadaRollback(mascotaRollbackId, microchipRollbackId);
         } catch (ServiceException e) {
             System.out.println("Rollback correcto: " + e.getMessage());
         }
